@@ -88,7 +88,7 @@ public class Counterparty extends BaseEntity<Counterparty> {
 
     public Counterparty updateWith(@Valid Counterparty counterparty) {
 
-        return this
+        return new Counterparty().setId(this.id)
                 .setFullName(counterparty.getFullName())
                 .setShortName(counterparty.getShortName())
                 .setAddress(counterparty.getAddress())
