@@ -1,10 +1,22 @@
 package com.veeteq.finance.counterparty.mapper;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.veeteq.finance.counterparty.dto.CounterpartyDTO;
 import com.veeteq.finance.counterparty.model.Address;
 import com.veeteq.finance.counterparty.model.Counterparty;
+import com.veeteq.finance.counterparty.repository.UtilityRepository;
 
+@Component
 public class CounterpartyMapper {
+    
+    private final UtilityRepository utilityRepository;
+
+    @Autowired
+    public CounterpartyMapper(UtilityRepository utilityRepository) {
+        this.utilityRepository = utilityRepository;
+    }
 
     public CounterpartyDTO toDto(Counterparty entity) {
         CounterpartyDTO dto = new CounterpartyDTO()
@@ -26,7 +38,7 @@ public class CounterpartyMapper {
     
     public Counterparty toEntity(CounterpartyDTO dto) {
         Counterparty entity = new Counterparty()
-                .setId(dto.getId())
+                .setId(dto.getId() != null ? dto.getId() : utilityRepository.getCounterpartyId())
                 .setFullName(dto.getFullname())
                 .setShortName(dto.getShortname())
                 .setNip(dto.getNip())
