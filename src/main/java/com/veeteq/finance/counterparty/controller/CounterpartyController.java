@@ -11,10 +11,13 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,15 +26,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.veeteq.finance.counterparty.dto.CounterpartyDTO;
+import com.veeteq.finance.counterparty.dto.PageResponse;
 import com.veeteq.finance.counterparty.exception.ResourceNotFoundException;
 import com.veeteq.finance.counterparty.service.CounterpartyService;
 
 @RestController
 @RequestMapping(path = "/api/counterparties")
+@CrossOrigin(origins = "*")
 public class CounterpartyController {
     private final Logger LOG = LoggerFactory.getLogger(CounterpartyController.class);
     
@@ -43,11 +49,23 @@ public class CounterpartyController {
     }
     
     @GetMapping(path = {"", "/"})
-    public ResponseEntity<List<CounterpartyDTO>> getAll() {
+    public ResponseEntity<PageResponse<CounterpartyDTO>> getAll(@RequestParam(name = "page",   defaultValue = "0") int page,
+                                                                @RequestParam(name = "size",   defaultValue = "25") int size,
+                                                                @RequestParam(name = "column", defaultValue = "id") String column,
+                                                                @RequestParam(name = "dir",    defaultValue = "ASC") String dir) {
+        LOG.info("Processing getAll request: page=" + page + ", size=" + size + ", column: " + column + ", dir: " + dir);
         
-        List<CounterpartyDTO> all = counterpartyService.findAll();
+        if (column.equals("city")) column = "address.city";
+        if (column.equals("street")) column = "address.street";
         
-        return ResponseEntity.ok().body(all);
+        Sort.Direction sortDir = dir.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort.Order order = new Sort.Order(sortDir, column).ignoreCase();
+        Sort sort = Sort.by(order);
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+        
+        PageResponse<CounterpartyDTO> pageResponse = counterpartyService.findAll(pageRequest);
+        
+        return ResponseEntity.ok().body(pageResponse);
     }
     
     @GetMapping(path = "/{id}")

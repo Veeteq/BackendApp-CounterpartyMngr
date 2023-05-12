@@ -1,14 +1,15 @@
 package com.veeteq.finance.counterparty.service;
 
-import java.util.List;
+import org.springframework.data.domain.PageRequest;
 
 import com.veeteq.finance.counterparty.dto.CounterpartyDTO;
+import com.veeteq.finance.counterparty.dto.PageResponse;
 import com.veeteq.finance.counterparty.exception.ResourceNotFoundException;
 import com.veeteq.finance.counterparty.model.Counterparty;
 
 public interface CounterpartyService {
 
-    List<CounterpartyDTO> findAll();
+    PageResponse<CounterpartyDTO> findAll(PageRequest pageRequest);
     
     CounterpartyDTO findById(Long id);
     
