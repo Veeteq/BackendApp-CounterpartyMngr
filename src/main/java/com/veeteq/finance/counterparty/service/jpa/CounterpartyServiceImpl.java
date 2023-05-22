@@ -11,8 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.veeteq.finance.counterparty.dto.BankDataDTO;
 import com.veeteq.finance.counterparty.dto.CounterpartyDTO;
 import com.veeteq.finance.counterparty.dto.PageResponse;
 import com.veeteq.finance.counterparty.exception.ResourceNotFoundException;
@@ -20,6 +22,7 @@ import com.veeteq.finance.counterparty.mapper.CounterpartyMapper;
 import com.veeteq.finance.counterparty.model.Counterparty;
 import com.veeteq.finance.counterparty.repository.CounterpartyRepository;
 import com.veeteq.finance.counterparty.service.CounterpartyService;
+import com.veeteq.finance.counterparty.service.SpecificationBuilder;
 
 @Service
 public class CounterpartyServiceImpl implements CounterpartyService {
@@ -104,4 +107,11 @@ public class CounterpartyServiceImpl implements CounterpartyService {
         this.delete(savedEntity);
     }
 
+    public Long searchByBankData(BankDataDTO data) {
+        Specification<Counterparty> specification = SpecificationBuilder.build(data);
+        Counterparty result = counterpartyRepository.findAll(specification).stream()
+                .findFirst()
+                .orElse(new Counterparty().setId(123L));
+        return result.getId();
+    }
 }

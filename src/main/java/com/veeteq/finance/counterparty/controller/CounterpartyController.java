@@ -30,13 +30,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.veeteq.finance.counterparty.dto.BankDataDTO;
 import com.veeteq.finance.counterparty.dto.CounterpartyDTO;
 import com.veeteq.finance.counterparty.dto.PageResponse;
 import com.veeteq.finance.counterparty.exception.ResourceNotFoundException;
 import com.veeteq.finance.counterparty.service.CounterpartyService;
 
 @RestController
-@RequestMapping(path = "/api/counterparties")
+@RequestMapping(path = "/api/counterparties", produces = "application/json")
 @CrossOrigin(origins = "*")
 public class CounterpartyController {
     private final Logger LOG = LoggerFactory.getLogger(CounterpartyController.class);
@@ -110,6 +111,15 @@ public class CounterpartyController {
       return ResponseEntity.noContent().build();
     }
 
+    @PostMapping(path = "/searchByBankData")
+    public ResponseEntity<Long> searchByBankData(@RequestBody BankDataDTO data) {
+        LOG.info("Processing search request for bank details: " + data.getTitle());
+        
+        Long counterpartyId = counterpartyService.searchByBankData(data);
+        
+        return ResponseEntity.ok().body(counterpartyId);
+    }
+    
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
       List<ObjectError> errors = ex.getBindingResult().getAllErrors();
