@@ -46,6 +46,9 @@ public class DataLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
         Path dataFile = Paths.get(dataPath).resolve(dataFilename);
         
+        if (! Files.exists(dataFile)) {
+        	return;
+        }
         InputStream inputStream = Files.newInputStream(dataFile, StandardOpenOption.READ);
         ObjectMapper mapper = new ObjectMapper();
         Root root = mapper.readValue(inputStream, Root.class);        
