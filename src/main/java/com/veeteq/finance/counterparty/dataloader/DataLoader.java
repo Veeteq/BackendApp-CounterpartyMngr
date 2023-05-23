@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -68,11 +69,19 @@ public class DataLoader implements CommandLineRunner {
                     return dto;
                 })
                 .map(mapper::toEntity)
-                .map(repository::save)
+                .map(this::save)
                 .collect(Collectors.toList());
 
         System.out.println("Data saved count: " + saved.size());
         System.out.println("Total elements in db: " + repository.count());
     }
 
+    private Counterparty save(Counterparty entity) {
+        try {
+            return repository.save(entity);
+        } catch (DataIntegrityViolationException e) {
+            System.err.println("Unable to save entity " + e.getMessage());
+            return entity;
+        }
+    }
 }
