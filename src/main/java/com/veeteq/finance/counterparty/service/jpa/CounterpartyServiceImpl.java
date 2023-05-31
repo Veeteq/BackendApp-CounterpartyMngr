@@ -40,7 +40,7 @@ public class CounterpartyServiceImpl implements CounterpartyService {
     @Override
     public PageResponse<CounterpartyDTO> findAll(PageRequest pageRequest) {
         
-        Page<Counterparty> page = counterpartyRepository.findAll(pageRequest);
+        Page<Counterparty> page = counterpartyRepository.findAllWithTags(pageRequest);
         List<CounterpartyDTO> content = page.get()
             .map(mapper::toDto)
             .collect(Collectors.toList());
@@ -107,6 +107,7 @@ public class CounterpartyServiceImpl implements CounterpartyService {
         this.delete(savedEntity);
     }
 
+    @Override
     public Long searchByBankData(BankDataDTO data) {
         Specification<Counterparty> specification = SpecificationBuilder.build(data);
         Counterparty result = counterpartyRepository.findAll(specification).stream()

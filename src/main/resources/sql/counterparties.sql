@@ -1,2 +1,2 @@
-insert into counterparties(cprt_id, cprt_name_tx, cprt_shrt_name_tx, addr_stre_tx, addr_city_tx) values(1, 'Apple Inc', 'Apple Inc', '1 Apple Park Way', 'Cupertino');
-insert into counterparties(cprt_id, cprt_name_tx, cprt_shrt_name_tx, addr_stre_tx, addr_city_tx) values(2, 'Google Inc', 'Google Inc', '1600 Amphitheatre Parkway', 'Mountain View');
+insert into counterparties(cprt_id, cprt_name_tx, cprt_shrt_name_tx, addr_stre_tx, addr_city_tx, crea_dt, updt_dt, vers_nm) values(1, 'Apple Inc', 'Apple Inc', '1 Apple Park Way', 'Cupertino', current_timestamp(), current_timestamp(), 0);
+insert into counterparties(cprt_id, cprt_name_tx, cprt_shrt_name_tx, addr_stre_tx, addr_city_tx, crea_dt, updt_dt, vers_nm) values(2, 'Google Inc', 'Google Inc', '1600 Amphitheatre Parkway', 'Mountain View', current_timestamp(), current_timestamp(), 0);

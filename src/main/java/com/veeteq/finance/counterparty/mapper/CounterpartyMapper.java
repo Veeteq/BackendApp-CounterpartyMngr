@@ -25,14 +25,18 @@ public class CounterpartyMapper {
                 .setShortname(entity.getShortName())
                 .setNip(entity.getNip())
                 .setIban(entity.getBankAccountNumber());
-                
-                Address address = entity.getAddress();
-                if (address != null) {
-                    dto.setStreet(entity.getAddress().getStreet())
-                    .setCity(entity.getAddress().getCity())
-                    .setPostcode(entity.getAddress().getPostalCode())
-                    .setCountry(entity.getAddress().getCountry());
-                }
+
+        Address address = entity.getAddress();
+        if (address != null) {
+            dto.setStreet(entity.getAddress().getStreet())
+            .setCity(entity.getAddress().getCity())
+            .setPostcode(entity.getAddress().getPostalCode())
+            .setCountry(entity.getAddress().getCountry());
+        }
+
+        if (entity.getTags().size() > 0) {
+            entity.getTags().forEach(dto::addToTags);
+        }
         return dto;
     }
     
@@ -44,6 +48,10 @@ public class CounterpartyMapper {
                 .setNip(dto.getNip())
                 .setBankAccountNumber(dto.getIban())
                 .setAddress(toAddress(dto));
+
+        if (dto.getTags().size() > 0) {
+            dto.getTags().forEach(entity::addToTags);
+        }
         return entity;
     }
     

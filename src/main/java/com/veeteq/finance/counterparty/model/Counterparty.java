@@ -1,9 +1,18 @@
 package com.veeteq.finance.counterparty.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.validation.Valid;
 
@@ -14,10 +23,10 @@ public class Counterparty extends BaseEntity<Counterparty> {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "cprt_id")
+    @Column(name = "cprt_id", nullable = false)
     private Long id;
 
-    @Column(name = "cprt_name_tx")
+    @Column(name = "cprt_name_tx", nullable = false)
     private String fullName;
     
     @Column(name = "cprt_shrt_name_tx")
@@ -31,6 +40,11 @@ public class Counterparty extends BaseEntity<Counterparty> {
     
     @Embedded
     private Address address;
+
+    @ElementCollection
+    @CollectionTable(name = "counterparty_tags", joinColumns = @JoinColumn(name = "cprt_id", referencedColumnName = "cprt_id")) 
+    @Column(name = "cprt_ctag_tx", nullable = false)
+    private Set<String> tags = new TreeSet<>();
 
     public Long getId() {
         return this.id;
@@ -64,7 +78,8 @@ public class Counterparty extends BaseEntity<Counterparty> {
     }
 
     public Counterparty setNip(String nip) {
-        this.nip = nip;
+        //Remove '-' characters
+        this.nip = nip.replace('-','\0');
         return this;
     }
 
@@ -86,6 +101,20 @@ public class Counterparty extends BaseEntity<Counterparty> {
         return this;
     }
 
+    public Set<String> getTags() {
+        return tags;
+    }
+
+    public Counterparty setTags(Set<String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    public Counterparty addToTags(String tag) {
+        this.tags.add(tag);
+        return this;
+    }
+
     public Counterparty updateWith(@Valid Counterparty counterparty) {
 
         return this
@@ -93,7 +122,8 @@ public class Counterparty extends BaseEntity<Counterparty> {
                 .setShortName(counterparty.getShortName())
                 .setAddress(counterparty.getAddress())
                 .setBankAccountNumber(counterparty.getBankAccountNumber())
-                .setNip(counterparty.getNip());
+                .setNip(counterparty.getNip())
+                .setTags(counterparty.getTags());
     }
 
 }
