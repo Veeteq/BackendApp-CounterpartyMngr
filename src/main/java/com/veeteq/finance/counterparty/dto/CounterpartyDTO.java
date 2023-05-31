@@ -1,5 +1,8 @@
 package com.veeteq.finance.counterparty.dto;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class CounterpartyDTO {
 
     private Long id;
@@ -11,6 +14,7 @@ public class CounterpartyDTO {
     private String postcode;
     private String country;
     private String iban;
+    private Set<String> tags = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -90,6 +94,20 @@ public class CounterpartyDTO {
 
     public CounterpartyDTO setIban(String iban) {
         this.iban = iban;
+        return this;
+    }
+
+    public Set<String> getTags() {
+        return tags;
+    }
+
+    public CounterpartyDTO setTags(Set<String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    public CounterpartyDTO addToTags(String tag) {
+        this.tags.add(tag);
         return this;
     }
 
