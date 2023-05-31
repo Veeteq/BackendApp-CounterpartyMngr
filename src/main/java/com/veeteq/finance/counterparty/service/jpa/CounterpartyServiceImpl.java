@@ -22,12 +22,13 @@ import com.veeteq.finance.counterparty.mapper.CounterpartyMapper;
 import com.veeteq.finance.counterparty.model.Counterparty;
 import com.veeteq.finance.counterparty.repository.CounterpartyRepository;
 import com.veeteq.finance.counterparty.service.CounterpartyService;
-import com.veeteq.finance.counterparty.service.SpecificationBuilder;
+import com.veeteq.finance.counterparty.service.CounterpartySpecificationBuilder;
 
 @Service
 public class CounterpartyServiceImpl implements CounterpartyService {
     private final Logger LOG = LoggerFactory.getLogger(CounterpartyServiceImpl.class);
-    
+    private final Long FAKE_ID = Long.valueOf(-1);
+
     private final CounterpartyMapper mapper;
     private final CounterpartyRepository counterpartyRepository;
     
@@ -109,10 +110,17 @@ public class CounterpartyServiceImpl implements CounterpartyService {
 
     @Override
     public Long searchByBankData(BankDataDTO data) {
-        Specification<Counterparty> specification = SpecificationBuilder.build(data);
+        String iban = data.getAccountNumber();
+        Specification<Counterparty> specification = CounterpartySpecificationBuilder.hasIban(iban);
+
+        long count = counterpartyRepository.count(specification);
+        if (count != 1) {
+            return FAKE_ID; //Return fake ID
+        }
+
         Counterparty result = counterpartyRepository.findAll(specification).stream()
                 .findFirst()
-                .orElse(new Counterparty().setId(123L));
+                .orElse(new Counterparty().setId(FAKE_ID)); //Return Counterparty with fake ID
         return result.getId();
     }
 }

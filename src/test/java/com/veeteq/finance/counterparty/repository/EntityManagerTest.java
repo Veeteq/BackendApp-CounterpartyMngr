@@ -1,4 +1,4 @@
-package com.veeteq.finance.counterparty.model;
+package com.veeteq.finance.counterparty.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -15,6 +15,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.veeteq.finance.counterparty.model.Counterparty;
+
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @TestPropertySource(properties = {
@@ -24,7 +26,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
         "spring.sql.init.schema-locations=classpath:sql/schema.sql",
         "spring.sql.init.data-locations=classpath:sql/counterparties.sql"
 })
-class ModelTest {
+class EntityManagerTest {
 
     @Autowired
     private TestEntityManager entityManager;
