@@ -1,4 +1,4 @@
-package com.veeteq.finance.counterparty.service;
+package com.veeteq.finance.counterparty.search;
 
 import org.springframework.data.jpa.domain.Specification;
 

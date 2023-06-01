@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Profile(value = {"default", "dev"})
 public class UtilityRepositoryDefault implements UtilityRepository {
-    private final int bound = 15;
+    private final int bound = 1500;
     
     @PersistenceContext
     private final EntityManager entityManager;
@@ -31,7 +31,7 @@ public class UtilityRepositoryDefault implements UtilityRepository {
         
         TypedQuery<Long> query = entityManager.createQuery("SELECT Count(c) FROM Counterparty c WHERE c.id = :id", Long.class);               
         do {
-            nextLong = rnd.nextInt(bound);
+            nextLong = rnd.nextInt(bound) + 1;
             count = query.setParameter("id", nextLong).getSingleResult();            
         } while(count > 0);
         
