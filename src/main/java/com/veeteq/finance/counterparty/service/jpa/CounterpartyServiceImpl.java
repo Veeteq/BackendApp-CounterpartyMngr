@@ -1,6 +1,7 @@
 package com.veeteq.finance.counterparty.service.jpa;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -11,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.veeteq.finance.counterparty.dto.BankDataDTO;
@@ -21,8 +21,9 @@ import com.veeteq.finance.counterparty.exception.ResourceNotFoundException;
 import com.veeteq.finance.counterparty.mapper.CounterpartyMapper;
 import com.veeteq.finance.counterparty.model.Counterparty;
 import com.veeteq.finance.counterparty.repository.CounterpartyRepository;
+import com.veeteq.finance.counterparty.search.SearchCriteria;
+import com.veeteq.finance.counterparty.service.CounterpartyFinder;
 import com.veeteq.finance.counterparty.service.CounterpartyService;
-import com.veeteq.finance.counterparty.service.CounterpartySpecificationBuilder;
 
 @Service
 public class CounterpartyServiceImpl implements CounterpartyService {
@@ -31,11 +32,15 @@ public class CounterpartyServiceImpl implements CounterpartyService {
 
     private final CounterpartyMapper mapper;
     private final CounterpartyRepository counterpartyRepository;
-    
+    private final CounterpartyFinder counterpartyFinder;
+
     @Autowired
-    public CounterpartyServiceImpl(CounterpartyRepository counterpartyRepository, CounterpartyMapper counterpartyMapper) {
+    public CounterpartyServiceImpl(CounterpartyRepository counterpartyRepository,
+                                   CounterpartyMapper counterpartyMapper,
+                                   CounterpartyFinder counterpartyFinder) {
         this.counterpartyRepository = counterpartyRepository;
         this.mapper = counterpartyMapper;
+        this.counterpartyFinder = counterpartyFinder;
     }
 
     @Override
@@ -65,7 +70,9 @@ public class CounterpartyServiceImpl implements CounterpartyService {
                 .orElseThrow();
     }
 
+
     @Override
+    @Transactional
     public CounterpartyDTO save(CounterpartyDTO dto) {
         LOG.info("Saving a new counterparty");
 
@@ -110,17 +117,14 @@ public class CounterpartyServiceImpl implements CounterpartyService {
 
     @Override
     public Long searchByBankData(BankDataDTO data) {
-        String iban = data.getAccountNumber();
-        Specification<Counterparty> specification = CounterpartySpecificationBuilder.hasIban(iban);
+        Map<String, String> searchCriteria = SearchCriteria.buildSearchCriteria(data);
+        List<Long> records = this.counterpartyFinder.getRecords(searchCriteria);
+        LOG.info("records: " + records.size());
 
-        long count = counterpartyRepository.count(specification);
-        if (count != 1) {
+        if (records.size() != 1) {
             return FAKE_ID; //Return fake ID
         }
 
-        Counterparty result = counterpartyRepository.findAll(specification).stream()
-                .findFirst()
-                .orElse(new Counterparty().setId(FAKE_ID)); //Return Counterparty with fake ID
-        return result.getId();
+        return records.get(0); //Return the ID of single element in collection
     }
 }

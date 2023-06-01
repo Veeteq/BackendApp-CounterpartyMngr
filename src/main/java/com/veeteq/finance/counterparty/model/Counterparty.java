@@ -1,8 +1,5 @@
 package com.veeteq.finance.counterparty.model;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -78,8 +75,11 @@ public class Counterparty extends BaseEntity<Counterparty> {
     }
 
     public Counterparty setNip(String nip) {
-        //Remove '-' characters
-        this.nip = nip.replace('-','\0');
+        if (nip != null) {
+            //Remove non-numeric characters
+            nip = nip.replaceAll("[^0-9.]", "");
+        }
+        this.nip = nip;
         return this;
     }
 

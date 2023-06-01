@@ -1,4 +1,4 @@
-package com.veeteq.finance.counterparty.service;
+package com.veeteq.finance.counterparty.search;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
