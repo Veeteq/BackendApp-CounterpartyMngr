@@ -119,7 +119,16 @@ public class CounterpartyController {
         
         return ResponseEntity.ok().body(counterpartyId);
     }
-    
+
+    @PostMapping(path = "/import")
+    public ResponseEntity<?> importData() {
+      /*
+      https://www.bezkoder.com/angular-spring-boot-file-upload/
+       */
+      System.out.println("import triggered");
+      return ResponseEntity.ok().build();
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
       List<ObjectError> errors = ex.getBindingResult().getAllErrors();
