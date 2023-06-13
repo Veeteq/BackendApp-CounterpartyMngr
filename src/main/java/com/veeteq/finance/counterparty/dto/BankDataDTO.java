@@ -1,11 +1,17 @@
 package com.veeteq.finance.counterparty.dto;
 
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(value = Include.NON_NULL)
-public class BankDataDTO {
+public class BankDataDTO implements Serializable {
+    private static final long serialVersionUID = -7096385209920998903L;
+
+    @JsonProperty(value = "id")
+    private Long id;
 
     @JsonProperty(value = "title")
     private String title;
@@ -18,6 +24,15 @@ public class BankDataDTO {
 
     @JsonProperty(value = "counterpartyAddress")
     private String counterpartyAddress;
+
+    public Long getId() {
+        return id;
+    }
+
+    public BankDataDTO setId(Long id) {
+        this.id = id;
+        return this;
+    }
 
     public String getTitle() {
         return title;

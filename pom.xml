@@ -77,6 +77,12 @@
       <artifactId>ojdbc8</artifactId>
     </dependency>
 
+    <!-- JMS/ActiveMQ -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-artemis</artifactId>
+    </dependency>
+
     <!-- Test -->
     <dependency>
       <groupId>org.springframework.boot</groupId>

@@ -127,4 +127,5 @@ public class CounterpartyServiceImpl implements CounterpartyService {
 
         return records.get(0); //Return the ID of single element in collection
     }
+
 }

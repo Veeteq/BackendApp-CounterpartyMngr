@@ -1,6 +1,7 @@
 package com.veeteq.finance.counterparty.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,6 +12,12 @@ import org.springframework.data.jpa.repository.Query;
 import com.veeteq.finance.counterparty.model.Counterparty;
 
 public interface CounterpartyRepository extends JpaRepository<Counterparty, Long>, JpaSpecificationExecutor<Counterparty>{
+
+    @Query("SELECT c FROM Counterparty c "
+           + "LEFT JOIN FETCH c.tags t "
+          + "WHERE c.id = :id")
+    @Override
+    Optional<Counterparty> findById(Long id);
 
     @Query(value = "SELECT c FROM Counterparty c "
                    + "LEFT JOIN FETCH c.tags t ",
