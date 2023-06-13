@@ -1,13 +1,17 @@
 package com.veeteq.finance.counterparty.jms;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import java.util.UUID;
+
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.MapMessage;
+import javax.jms.Message;
+import javax.jms.Session;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
-
-import javax.jms.*;
-import java.util.UUID;
 
 @Service
 public class MessageQueueService {
