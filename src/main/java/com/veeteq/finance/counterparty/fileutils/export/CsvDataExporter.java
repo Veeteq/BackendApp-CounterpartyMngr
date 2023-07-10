@@ -33,7 +33,7 @@ public class CsvDataExporter implements DataExporter {
                     .setId(cprt.getId())
                     .setFullName(cprt.getFullName())
                     .setShortName(cprt.getShortName())
-                    .setNip(cprt.getNip())
+                    .setTaxId(cprt.getTaxId())
                     .setIban(cprt.getIban());
             if (address != null) {
                 bean.setStreet(address.getStreet())

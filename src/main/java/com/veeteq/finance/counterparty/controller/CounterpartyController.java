@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import com.veeteq.finance.counterparty.search.SearchCriteria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,6 +119,15 @@ public class CounterpartyController {
         Long counterpartyId = counterpartyService.searchByBankData(data);
 
         return ResponseEntity.ok().body(counterpartyId);
+    }
+
+    @PostMapping(path = "/searchByParams")
+    public ResponseEntity<List<CounterpartyDTO>> searchByNameIbanTaxId(@RequestBody Map<String, String> searchParams) {
+      LOG.info("Processing search request for counterparty using params: " + searchParams.keySet());
+
+      List<CounterpartyDTO> result = counterpartyService.searchByNameIbanTaxId(searchParams);
+
+      return ResponseEntity.ok(result);
     }
 
     @PostMapping(path = "/import")

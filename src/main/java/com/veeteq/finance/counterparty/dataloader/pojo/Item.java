@@ -14,7 +14,7 @@ public class Item {
     private String shortname;
 
     @JsonProperty(value = "cprt_nip_tx")
-    private String nip;
+    private String taxId;
     
     @JsonProperty(value = "addr_stre_tx")
     private String street;
@@ -43,8 +43,8 @@ public class Item {
         return shortname;
     }
 
-    public String getNip() {
-        return nip;
+    public String getTaxId() {
+        return taxId;
     }
 
     public String getStreet() {

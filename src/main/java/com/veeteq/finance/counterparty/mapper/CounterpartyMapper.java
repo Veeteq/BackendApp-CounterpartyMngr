@@ -23,7 +23,7 @@ public class CounterpartyMapper {
                 .setId(entity.getId())
                 .setFullname(entity.getFullName())
                 .setShortname(entity.getShortName())
-                .setNip(entity.getNip())
+                .setTaxId(entity.getTaxId())
                 .setIban(entity.getIban());
 
         Address address = entity.getAddress();
@@ -45,7 +45,7 @@ public class CounterpartyMapper {
                 .setId(dto.getId() != null ? dto.getId() : utilityRepository.getCounterpartyId())
                 .setFullName(dto.getFullname())
                 .setShortName(dto.getShortname())
-                .setNip(dto.getNip())
+                .setTaxId(dto.getTaxId())
                 .setIban(dto.getIban())
                 .setAddress(toAddress(dto));
 

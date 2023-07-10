@@ -8,7 +8,7 @@ public class CounterpartyDTO {
     private Long id;
     private String fullname;
     private String shortname;
-    private String nip;
+    private String taxId;
     private String street;
     private String city;
     private String postcode;
@@ -43,12 +43,12 @@ public class CounterpartyDTO {
         return this;
     }
 
-    public String getNip() {
-        return nip;
+    public String getTaxId() {
+        return taxId;
     }
 
-    public CounterpartyDTO setNip(String nip) {
-        this.nip = nip;
+    public CounterpartyDTO setTaxId(String taxId) {
+        this.taxId = taxId;
         return this;
     }
 

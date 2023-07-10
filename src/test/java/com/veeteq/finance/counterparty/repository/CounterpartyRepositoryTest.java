@@ -38,14 +38,14 @@ class CounterpartyRepositoryTest {
     void testSaveNewCounterparty() {
         String fullName = "Korben Dallas";
         Counterparty counterparty = createCounterparty(fullName);
-        String nip = counterparty.getNip();
+        String taxId = counterparty.getTaxId();
         String iban = counterparty.getIban();
 
         Counterparty saved = repository.save(counterparty);
 
         assertEquals(3, saved.getId());
         assertEquals(fullName, saved.getFullName());
-        assertEquals(nip, saved.getNip());
+        assertEquals(taxId, saved.getTaxId());
         assertEquals(iban, saved.getIban());
     }
 
@@ -54,7 +54,7 @@ class CounterpartyRepositoryTest {
         Long idToUpdate = 1L;
         String fullName = "Korben Dallas";
         Counterparty counterparty = createCounterparty(fullName);
-        String nip = counterparty.getNip();
+        String nip = counterparty.getTaxId();
         String iban = counterparty.getIban();
 
         Counterparty reference = repository.getReferenceById(idToUpdate);
@@ -69,7 +69,7 @@ class CounterpartyRepositoryTest {
 
         assertEquals(idToUpdate, saved.getId());
         assertEquals(fullName, saved.getFullName());
-        assertEquals(nip, saved.getNip());
+        assertEquals(nip, saved.getTaxId());
         assertEquals(iban, saved.getIban());
     }
 
@@ -77,14 +77,14 @@ class CounterpartyRepositoryTest {
     void testSaveCounterpartyWithTags() {
         String fullName = "Lilu Dallas";
         Counterparty counterparty = createCounterparty(fullName);
-        String nip = counterparty.getNip();
+        String nip = counterparty.getTaxId();
         String iban = counterparty.getIban();
 
         Counterparty saved = repository.save(counterparty);
 
         assertEquals(3, saved.getId());
         assertEquals(fullName, saved.getFullName());
-        assertEquals(nip, saved.getNip());
+        assertEquals(nip, saved.getTaxId());
         assertEquals(iban, saved.getIban());
         assertEquals(4, saved.getTags().size());
     }
@@ -147,7 +147,7 @@ class CounterpartyRepositoryTest {
                 .setId(id)
                 .setFullName(fullName)
                 .setShortName(fullName.split(" ")[0])
-                .setNip(nip)
+                .setTaxId(nip)
                 .setIban(iban)
                 .setTags(Sets.newHashSet("Korben", "Lilu", "Dallas", "5th Element"));
         return counterparty;

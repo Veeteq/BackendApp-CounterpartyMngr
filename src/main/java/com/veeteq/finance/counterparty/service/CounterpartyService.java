@@ -8,6 +8,9 @@ import com.veeteq.finance.counterparty.dto.PageResponse;
 import com.veeteq.finance.counterparty.exception.ResourceNotFoundException;
 import com.veeteq.finance.counterparty.model.Counterparty;
 
+import java.util.List;
+import java.util.Map;
+
 public interface CounterpartyService {
 
     PageResponse<CounterpartyDTO> findAll(PageRequest pageRequest);
@@ -26,4 +29,5 @@ public interface CounterpartyService {
 
     void exportData();
 
+    List<CounterpartyDTO> searchByNameIbanTaxId(Map<String, String> searchParams);
 }
