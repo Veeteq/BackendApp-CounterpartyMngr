@@ -1,5 +1,6 @@
 package com.veeteq.finance.counterparty.service.jpa;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -119,6 +120,8 @@ public class CounterpartyServiceImpl implements CounterpartyService {
 
     @Override
     public Long searchByBankData(BankDataDTO data) {
+        LOG.info("Search using BankData");
+
         Map<String, String> searchCriteria = SearchCriteria.buildSearchCriteria(data);
         List<Long> records = this.counterpartyFinder.getRecords(searchCriteria);
         LOG.info("records: " + records.size());
@@ -128,6 +131,26 @@ public class CounterpartyServiceImpl implements CounterpartyService {
         }
 
         return records.get(0); //Return the ID of single element in collection
+    }
+
+    @Override
+    public List<CounterpartyDTO> searchByNameIbanTaxId(Map<String, String> searchParams) {
+        LOG.info("Search using search params");
+
+        Map<String, String> searchCriteria = new HashMap<>();
+        String[] searchAttributes = {"name", "iban", "taxId"};
+        for (String key : searchAttributes) {
+            String value = searchParams.get(key);
+            if (value != null) {
+                searchCriteria.put(key, value);
+            }
+        }
+        List<CounterpartyDTO> counterparties = this.counterpartyFinder.searchByCriteria(searchCriteria)
+                .stream()
+                .map(mapper::toDto)
+                .collect(Collectors.toList());
+
+        return counterparties;
     }
 
     @Override

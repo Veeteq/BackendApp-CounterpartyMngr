@@ -29,8 +29,8 @@ public class Counterparty extends BaseEntity<Counterparty> {
     @Column(name = "cprt_shrt_name_tx")
     private String shortName;
 
-    @Column(name = "cprt_nip_tx")
-    private String nip;
+    @Column(name = "cprt_tax_tx")
+    private String taxId;
 
     @Column(name = "cprt_iban_tx")
     private String iban;
@@ -70,16 +70,16 @@ public class Counterparty extends BaseEntity<Counterparty> {
         return this;
     }
 
-    public String getNip() {
-        return nip;
+    public String getTaxId() {
+        return taxId;
     }
 
-    public Counterparty setNip(String nip) {
-        if (nip != null) {
+    public Counterparty setTaxId(String taxId) {
+        if (taxId != null) {
             //Remove non-numeric characters
-            nip = nip.replaceAll("[^0-9.]", "");
+            taxId = taxId.replaceAll("[^0-9.]", "");
         }
-        this.nip = nip;
+        this.taxId = taxId;
         return this;
     }
 
@@ -122,7 +122,7 @@ public class Counterparty extends BaseEntity<Counterparty> {
                 .setShortName(counterparty.getShortName())
                 .setAddress(counterparty.getAddress())
                 .setIban(counterparty.getIban())
-                .setNip(counterparty.getNip())
+                .setTaxId(counterparty.getTaxId())
                 .setTags(counterparty.getTags());
     }
 

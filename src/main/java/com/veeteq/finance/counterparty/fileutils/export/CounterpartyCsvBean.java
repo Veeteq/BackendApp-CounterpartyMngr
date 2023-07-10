@@ -20,8 +20,8 @@ public class CounterpartyCsvBean extends BaseCsvBean implements FileTemplate {
   @CsvBindByPosition(position = ColumnPositions.SHORT_NAME_POSITION)
   private String shortName;
 
-  @CsvBindByPosition(position = ColumnPositions.NIP_POSITION)
-  private String nip;
+  @CsvBindByPosition(position = ColumnPositions.TAX_ID_POSITION)
+  private String taxId;
 
   @CsvBindByPosition(position = ColumnPositions.IBAN_POSITION)
   private String iban;
@@ -65,12 +65,12 @@ public class CounterpartyCsvBean extends BaseCsvBean implements FileTemplate {
       return this;
   }
 
-  public String getNip() {
-      return nip;
+  public String getTaxId() {
+      return taxId;
   }
 
-  public CounterpartyCsvBean setNip(String nip) {
-    this.nip = nip;
+  public CounterpartyCsvBean setTaxId(String taxId) {
+    this.taxId = taxId;
     return this;
   }
 

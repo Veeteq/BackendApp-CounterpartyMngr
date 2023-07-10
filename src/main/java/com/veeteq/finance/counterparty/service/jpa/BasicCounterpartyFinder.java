@@ -1,23 +1,20 @@
 package com.veeteq.finance.counterparty.service.jpa;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.veeteq.finance.counterparty.model.Counterparty;
 import com.veeteq.finance.counterparty.service.CounterpartyFinder;
+import org.w3c.dom.css.Counter;
 
 /**
  * https://betterprogramming.pub/how-to-create-dynamic-queries-in-spring-data-355ff69e81d0
@@ -72,6 +69,53 @@ public class BasicCounterpartyFinder implements CounterpartyFinder {
 
     @SuppressWarnings("unchecked")
     List<Long> resultList = query.getResultList();
+    entityManager.close();
+
+    return resultList;
+  }
+
+  @Override
+  public List<Counterparty> searchByCriteria(Map<String, String> searchCriteria) {
+    if (searchCriteria == null || searchCriteria.isEmpty()) {
+      return Collections.<Counterparty>emptyList();
+    }
+
+    String name = searchCriteria.get("name");
+    String iban = searchCriteria.get("iban");
+    String taxId = searchCriteria.get("taxId");
+
+    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Counterparty> criteriaQuery = criteriaBuilder.createQuery(Counterparty.class);
+    Root<Counterparty> counterparty = criteriaQuery.from(Counterparty.class);
+    Fetch<Counterparty, String> tags = counterparty.fetch("tags", JoinType.LEFT);
+
+    List<Predicate> predicates = new ArrayList<>();
+
+    Predicate namePredicate = null;
+    if (name != null) {
+      namePredicate = criteriaBuilder.like(criteriaBuilder.lower(counterparty.<String>get("fullName")), "%" + name.toLowerCase() + "%");
+      namePredicate = criteriaBuilder.or(namePredicate, criteriaBuilder.like(criteriaBuilder.lower(counterparty.<String>get("shortName")), "%" + name.toLowerCase() + "%"));
+      predicates.add(namePredicate);
+    }
+
+    Predicate ibanPredicate = null;
+    if (iban != null) {
+      ibanPredicate = criteriaBuilder.like(counterparty.<String>get("iban"), "%" + iban + "%");
+      predicates.add(ibanPredicate);
+    }
+
+    Predicate taxIdPredicate = null;
+    if (taxId != null) {
+      taxIdPredicate = criteriaBuilder.like(counterparty.<String>get("taxId"), "%" + taxId + "%");
+      predicates.add(taxIdPredicate);
+    }
+
+    Predicate where = criteriaBuilder.or(predicates.toArray(new Predicate[0]));
+    criteriaQuery.where(where);
+
+    Query query = entityManager.createQuery(criteriaQuery);
+
+    List<Counterparty> resultList = query.getResultList();
     entityManager.close();
 
     return resultList;

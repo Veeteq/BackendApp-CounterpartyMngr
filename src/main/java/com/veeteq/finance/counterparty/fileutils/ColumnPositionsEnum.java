@@ -8,7 +8,7 @@ public enum ColumnPositionsEnum {
     ID(ColumnPositions.ID_POSITION, "Id", row -> row.getId()),
     FULL_NAME(ColumnPositions.FULL_NAME_POSITION, "Full name", row -> row.getFullName()),
     SHORT_NAME(ColumnPositions.SHORT_NAME_POSITION, "Short name", row -> row.getShortName()),
-    NIP(ColumnPositions.NIP_POSITION, "NIP", row -> row.getNip()),
+    NIP(ColumnPositions.TAX_ID_POSITION, "NIP", row -> row.getTaxId()),
     IBAN(ColumnPositions.IBAN_POSITION, "IBAN", row -> row.getIban()),
     STREET(ColumnPositions.STREET_POSITION, "Street ", row -> row.getStreet()),
     POSTAL_CODE(ColumnPositions.POSTAL_CODE_POSITION, "Postal code", row -> row.getPostalCode()),
