@@ -7,14 +7,18 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.veeteq.finance.counterparty.model.Counterparty;
 import com.veeteq.finance.counterparty.service.CounterpartyFinder;
-import org.w3c.dom.css.Counter;
 
 /**
  * https://betterprogramming.pub/how-to-create-dynamic-queries-in-spring-data-355ff69e81d0
@@ -87,7 +91,7 @@ public class BasicCounterpartyFinder implements CounterpartyFinder {
     CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
     CriteriaQuery<Counterparty> criteriaQuery = criteriaBuilder.createQuery(Counterparty.class);
     Root<Counterparty> counterparty = criteriaQuery.from(Counterparty.class);
-    Fetch<Counterparty, String> tags = counterparty.fetch("tags", JoinType.LEFT);
+    counterparty.fetch("tags", JoinType.LEFT);
 
     List<Predicate> predicates = new ArrayList<>();
 
@@ -115,7 +119,8 @@ public class BasicCounterpartyFinder implements CounterpartyFinder {
 
     Query query = entityManager.createQuery(criteriaQuery);
 
-    List<Counterparty> resultList = query.getResultList();
+    @SuppressWarnings("unchecked")
+	List<Counterparty> resultList = query.getResultList();
     entityManager.close();
 
     return resultList;
