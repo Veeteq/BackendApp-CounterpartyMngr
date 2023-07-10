@@ -18,6 +18,8 @@ import com.veeteq.finance.counterparty.dto.BankDataDTO;
 import com.veeteq.finance.counterparty.dto.CounterpartyDTO;
 import com.veeteq.finance.counterparty.dto.PageResponse;
 import com.veeteq.finance.counterparty.exception.ResourceNotFoundException;
+import com.veeteq.finance.counterparty.fileutils.export.DataExporter;
+import com.veeteq.finance.counterparty.fileutils.export.DataExporterFactory;
 import com.veeteq.finance.counterparty.mapper.CounterpartyMapper;
 import com.veeteq.finance.counterparty.model.Counterparty;
 import com.veeteq.finance.counterparty.repository.CounterpartyRepository;
@@ -126,6 +128,15 @@ public class CounterpartyServiceImpl implements CounterpartyService {
         }
 
         return records.get(0); //Return the ID of single element in collection
+    }
+
+    @Override
+    public void exportData() {
+        LOG.info("Exporting counterparties to file");
+
+        DataExporter exporter = DataExporterFactory.getExporter();
+        exporter.setDataSource(counterpartyRepository);
+        exporter.exportData();
     }
 
 }

@@ -129,6 +129,17 @@ public class CounterpartyController {
       return ResponseEntity.ok().build();
     }
 
+    @GetMapping(path = "/export")
+    public ResponseEntity<String> exportData() {
+        LOG.info("Processing request to export data");
+      /*
+      https://www.bezkoder.com/angular-spring-boot-file-upload/
+       */
+      counterpartyService.exportData();
+
+      return ResponseEntity.ok("data exported");
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
       List<ObjectError> errors = ex.getBindingResult().getAllErrors();
