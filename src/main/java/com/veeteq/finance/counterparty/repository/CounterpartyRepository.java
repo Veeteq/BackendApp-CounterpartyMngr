@@ -31,5 +31,5 @@ public interface CounterpartyRepository extends JpaRepository<Counterparty, Long
           + "WHERE t = :tag ")
     List<Counterparty> findByTag(String tag);
 
-    List<Counterparty> findByBankAccountNumber(String bankAccountNumber);
+    List<Counterparty> findByIban(String iban);
 }

@@ -17,13 +17,13 @@ public class BankDataDTO implements Serializable {
     private String title;
 
     @JsonProperty(value = "counterpartyIban")
-    private String accountNumber;
+    private String iban;
 
     @JsonProperty(value = "counterpartyName")
-    private String counterparty;
+    private String name;
 
     @JsonProperty(value = "counterpartyAddress")
-    private String counterpartyAddress;
+    private String address;
 
     public Long getId() {
         return id;
@@ -43,31 +43,30 @@ public class BankDataDTO implements Serializable {
         return this;
     }
 
-    public String getAccountNumber() {
-        return accountNumber;
+    public String getIban() {
+        return iban;
     }
 
-    public BankDataDTO setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
+    public BankDataDTO setIban(String iban) {
+        this.iban = iban;
         return this;
     }
 
-    public String getCounterparty() {
-        return counterparty;
+    public String getName() {
+        return name;
     }
 
-    public BankDataDTO setCounterparty(String counterparty) {
-        this.counterparty = counterparty;
+    public BankDataDTO setName(String name) {
+        this.name = name;
         return this;
     }
 
-    public String getCounterpartyAddress() {
-        return counterpartyAddress;
+    public String getAddress() {
+        return address;
     }
 
-    public BankDataDTO setCounterpartyAddress(String counterpartyAddress) {
-        this.counterpartyAddress = counterpartyAddress;
+    public BankDataDTO setAddress(String address) {
+        this.address = address;
         return this;
     }
-
 }

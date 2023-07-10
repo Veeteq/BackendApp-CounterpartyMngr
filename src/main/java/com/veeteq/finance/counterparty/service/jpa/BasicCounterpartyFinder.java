@@ -43,9 +43,9 @@ public class BasicCounterpartyFinder implements CounterpartyFinder {
     }
 
     String tag = searchCriteria.get("title");
-    String bankAccountNumber = searchCriteria.get("accountNumber");
-    String counterpartyName = searchCriteria.get("counterpartyName");
-    String counterpartyAddress = searchCriteria.get("counterpartyAddress");
+    String iban = searchCriteria.get("iban");
+    String counterpartyName = searchCriteria.get("name");
+    String counterpartyAddress = searchCriteria.get("address");
 
     CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
     CriteriaQuery<Counterparty> criteriaQuery = criteriaBuilder.createQuery(Counterparty.class);
@@ -53,8 +53,8 @@ public class BasicCounterpartyFinder implements CounterpartyFinder {
     Join<Counterparty, String> tags = counterparty.join("tags", JoinType.LEFT);
 
     Predicate where = criteriaBuilder.conjunction();
-    if (bankAccountNumber != null) {
-      where = criteriaBuilder.and(where, criteriaBuilder.equal(counterparty.get("bankAccountNumber"), bankAccountNumber));
+    if (iban != null) {
+      where = criteriaBuilder.and(where, criteriaBuilder.equal(counterparty.get("iban"), iban));
     }
     if (counterpartyName != null) {
       where = criteriaBuilder.and(where, criteriaBuilder.like(criteriaBuilder.lower(counterparty.<String>get("shortName")), "%" + counterpartyName.toLowerCase() + "%"));
@@ -71,7 +71,7 @@ public class BasicCounterpartyFinder implements CounterpartyFinder {
     Query query = entityManager.createQuery(criteriaQuery);
 
     @SuppressWarnings("unchecked")
-	List<Long> resultList = query.getResultList();
+    List<Long> resultList = query.getResultList();
     entityManager.close();
 
     return resultList;

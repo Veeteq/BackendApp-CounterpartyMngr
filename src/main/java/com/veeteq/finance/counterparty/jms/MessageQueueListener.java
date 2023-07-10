@@ -41,7 +41,7 @@ public class MessageQueueListener {
 
     @JmsListener(destination = "${artemis.counterparty.request.queue}")
     public void receiveMessage(@Payload String detail, @Headers MessageHeaders headers, Message message, Session session) {
-        LOG.info("received <" + detail + ">");
+        LOG.info("received: " + detail);
 
         try {
             BankDataDTO bankData = mapper.readValue(detail, BankDataDTO.class);
@@ -54,6 +54,12 @@ public class MessageQueueListener {
             throw new RuntimeException(e);
         } catch (JMSException e) {
             throw new RuntimeException(e);
+        } finally {
+            try {
+                message.acknowledge();
+            } catch (JMSException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
     
