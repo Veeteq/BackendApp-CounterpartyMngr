@@ -24,4 +24,6 @@ public interface CounterpartyService {
 
     Long searchByBankData(BankDataDTO data);
 
+    void exportData();
+
 }
