@@ -45,12 +45,12 @@ public class CounterpartyServiceImpl implements CounterpartyService {
 
     @Override
     public PageResponse<CounterpartyDTO> findAll(PageRequest pageRequest) {
-        
+
         Page<Counterparty> page = counterpartyRepository.findAllWithTags(pageRequest);
         List<CounterpartyDTO> content = page.get()
             .map(mapper::toDto)
             .collect(Collectors.toList());
-        
+
         PageResponse<CounterpartyDTO> response = new PageResponse<CounterpartyDTO>()
                 .setContent(content)
                 .setPageNo(page.getNumber())
@@ -59,11 +59,11 @@ public class CounterpartyServiceImpl implements CounterpartyService {
                 .setTotalPages(page.getTotalPages())
                 .setLast(page.isLast());
 
-        return response;        
+        return response;
     }
 
     @Override
-    public CounterpartyDTO findById(Long id) {        
+    public CounterpartyDTO findById(Long id) {
         return counterpartyRepository
                 .findById(id)
                 .map(mapper::toDto)
@@ -77,9 +77,9 @@ public class CounterpartyServiceImpl implements CounterpartyService {
         LOG.info("Saving a new counterparty");
 
         Counterparty entity = mapper.toEntity(dto);
-        
+
         Counterparty savedCounterparty = counterpartyRepository.save(entity);
-        
+
         return mapper.toDto(savedCounterparty);
     }
 
@@ -87,9 +87,9 @@ public class CounterpartyServiceImpl implements CounterpartyService {
     @Transactional
     public CounterpartyDTO update(Long id, @Valid CounterpartyDTO dto) throws ResourceNotFoundException {
         LOG.info("Updating a counterparty with id: " + id);
-        
+
         Counterparty entity = mapper.toEntity(dto);
-        
+
         return counterpartyRepository.findById(id)
                 .map(oldItem -> {
                   Counterparty updated = oldItem.updateWith(entity);

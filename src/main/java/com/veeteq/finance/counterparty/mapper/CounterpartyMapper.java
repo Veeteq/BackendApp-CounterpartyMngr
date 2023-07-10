@@ -10,7 +10,7 @@ import com.veeteq.finance.counterparty.repository.UtilityRepository;
 
 @Component
 public class CounterpartyMapper {
-    
+
     private final UtilityRepository utilityRepository;
 
     @Autowired
@@ -24,7 +24,7 @@ public class CounterpartyMapper {
                 .setFullname(entity.getFullName())
                 .setShortname(entity.getShortName())
                 .setNip(entity.getNip())
-                .setIban(entity.getBankAccountNumber());
+                .setIban(entity.getIban());
 
         Address address = entity.getAddress();
         if (address != null) {
@@ -39,14 +39,14 @@ public class CounterpartyMapper {
         }
         return dto;
     }
-    
+
     public Counterparty toEntity(CounterpartyDTO dto) {
         Counterparty entity = new Counterparty()
                 .setId(dto.getId() != null ? dto.getId() : utilityRepository.getCounterpartyId())
                 .setFullName(dto.getFullname())
                 .setShortName(dto.getShortname())
                 .setNip(dto.getNip())
-                .setBankAccountNumber(dto.getIban())
+                .setIban(dto.getIban())
                 .setAddress(toAddress(dto));
 
         if (dto.getTags().size() > 0) {
@@ -54,7 +54,7 @@ public class CounterpartyMapper {
         }
         return entity;
     }
-    
+
     public Address toAddress(CounterpartyDTO dto) {
         Address address = new Address()
                 .setStreet(dto.getStreet())

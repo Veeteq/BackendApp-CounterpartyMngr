@@ -16,7 +16,7 @@ import javax.validation.Valid;
 @Entity
 @Table(name = "counterparties")
 public class Counterparty extends BaseEntity<Counterparty> {
-    
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -25,42 +25,42 @@ public class Counterparty extends BaseEntity<Counterparty> {
 
     @Column(name = "cprt_name_tx", nullable = false)
     private String fullName;
-    
+
     @Column(name = "cprt_shrt_name_tx")
     private String shortName;
 
     @Column(name = "cprt_nip_tx")
     private String nip;
-    
-    @Column(name = "cprt_acco_numb_tx")
-    private String bankAccountNumber;
-    
+
+    @Column(name = "cprt_iban_tx")
+    private String iban;
+
     @Embedded
     private Address address;
 
     @ElementCollection
-    @CollectionTable(name = "counterparty_tags", joinColumns = @JoinColumn(name = "cprt_id", referencedColumnName = "cprt_id")) 
+    @CollectionTable(name = "counterparty_tags", joinColumns = @JoinColumn(name = "cprt_id", referencedColumnName = "cprt_id"))
     @Column(name = "cprt_ctag_tx", nullable = false)
     private Set<String> tags = new TreeSet<>();
 
     public Long getId() {
         return this.id;
     }
-    
+
     public Counterparty setId(Long id) {
         this.id = id;
         return this;
     }
-    
+
     public String getFullName() {
         return this.fullName;
     }
-    
+
     public Counterparty setFullName(String fullName) {
         this.fullName = fullName;
         return this;
     }
-    
+
     public String getShortName() {
         return shortName;
     }
@@ -83,12 +83,12 @@ public class Counterparty extends BaseEntity<Counterparty> {
         return this;
     }
 
-    public String getBankAccountNumber() {
-        return bankAccountNumber;
+    public String getIban() {
+        return iban;
     }
 
-    public Counterparty setBankAccountNumber(String bankAccountNumber) {
-        this.bankAccountNumber = bankAccountNumber;
+    public Counterparty setIban(String iban) {
+        this.iban = iban;
         return this;
     }
 
@@ -121,7 +121,7 @@ public class Counterparty extends BaseEntity<Counterparty> {
                 .setFullName(counterparty.getFullName())
                 .setShortName(counterparty.getShortName())
                 .setAddress(counterparty.getAddress())
-                .setBankAccountNumber(counterparty.getBankAccountNumber())
+                .setIban(counterparty.getIban())
                 .setNip(counterparty.getNip())
                 .setTags(counterparty.getTags());
     }

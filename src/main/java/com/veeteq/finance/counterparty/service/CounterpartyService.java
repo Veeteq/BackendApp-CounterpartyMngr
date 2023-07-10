@@ -11,15 +11,15 @@ import com.veeteq.finance.counterparty.model.Counterparty;
 public interface CounterpartyService {
 
     PageResponse<CounterpartyDTO> findAll(PageRequest pageRequest);
-    
+
     CounterpartyDTO findById(Long id);
-    
+
     CounterpartyDTO save(CounterpartyDTO dto);
-    
+
     CounterpartyDTO update(Long id, CounterpartyDTO dto) throws ResourceNotFoundException;
 
     void delete(Counterparty entity);
-    
+
     void deleteById(Long id) throws ResourceNotFoundException;
 
     Long searchByBankData(BankDataDTO data);

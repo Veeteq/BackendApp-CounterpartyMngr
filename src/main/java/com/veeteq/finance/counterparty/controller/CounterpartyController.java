@@ -41,42 +41,42 @@ import com.veeteq.finance.counterparty.service.CounterpartyService;
 @CrossOrigin(origins = "*")
 public class CounterpartyController {
     private final Logger LOG = LoggerFactory.getLogger(CounterpartyController.class);
-    
+
     private final CounterpartyService counterpartyService;
 
     @Autowired
     public CounterpartyController(CounterpartyService counterpartyService) {
         this.counterpartyService = counterpartyService;
     }
-    
+
     @GetMapping(path = {"", "/"})
     public ResponseEntity<PageResponse<CounterpartyDTO>> getAll(@RequestParam(name = "page",   defaultValue = "0") int page,
                                                                 @RequestParam(name = "size",   defaultValue = "25") int size,
                                                                 @RequestParam(name = "column", defaultValue = "id") String column,
                                                                 @RequestParam(name = "dir",    defaultValue = "ASC") String dir) {
         LOG.info("Processing getAll request: page=" + page + ", size=" + size + ", column: " + column + ", dir: " + dir);
-        
+
         if (column.equals("city")) column = "address.city";
         if (column.equals("street")) column = "address.street";
-        
+
         Sort.Direction sortDir = dir.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
         Sort.Order order = new Sort.Order(sortDir, column).ignoreCase();
         Sort sort = Sort.by(order);
         PageRequest pageRequest = PageRequest.of(page, size, sort);
-        
+
         PageResponse<CounterpartyDTO> pageResponse = counterpartyService.findAll(pageRequest);
-        
+
         return ResponseEntity.ok().body(pageResponse);
     }
-    
+
     @GetMapping(path = "/{id}")
     public ResponseEntity<CounterpartyDTO> findById(@PathVariable("id") Long id) {
-        
+
         CounterpartyDTO counterparty = counterpartyService.findById(id);
-        
+
         return ResponseEntity.ok().body(counterparty);
     }
-   
+
     @PostMapping(path = {"", "/"})
     public ResponseEntity<CounterpartyDTO> create(@Valid @RequestBody CounterpartyDTO counterparty) {
       LOG.info("creating a new item");
@@ -97,26 +97,26 @@ public class CounterpartyController {
 
         CounterpartyDTO updated = counterpartyService.update(id, dto);
 
-        LOG.info(MessageFormat.format("Counterparty with id {0} updated", updated.getId()));                
-        
+        LOG.info(MessageFormat.format("Counterparty with id {0} updated", updated.getId()));
+
         return ResponseEntity.ok().body(updated);
-    }     
-    
+    }
+
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<CounterpartyDTO> delete(@PathVariable("id") Long id) throws ResourceNotFoundException {
       LOG.info("deleting the item with id: " + id);
 
       counterpartyService.deleteById(id);
-      
+
       return ResponseEntity.noContent().build();
     }
 
     @PostMapping(path = "/searchByBankData")
     public ResponseEntity<Long> searchByBankData(@RequestBody BankDataDTO data) {
         LOG.info("Processing search request for bank details: " + data.getTitle());
-        
+
         Long counterpartyId = counterpartyService.searchByBankData(data);
-        
+
         return ResponseEntity.ok().body(counterpartyId);
     }
 
