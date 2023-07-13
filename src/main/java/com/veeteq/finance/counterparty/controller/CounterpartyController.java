@@ -53,14 +53,15 @@ public class CounterpartyController {
     public ResponseEntity<PageResponse<CounterpartyDTO>> getAll(@RequestParam(name = "page",   defaultValue = "0") int page,
                                                                 @RequestParam(name = "size",   defaultValue = "25") int size,
                                                                 @RequestParam(name = "column", defaultValue = "id") String column,
-                                                                @RequestParam(name = "dir",    defaultValue = "ASC") String dir) {
-        LOG.info("Processing getAll request: page=" + page + ", size=" + size + ", column: " + column + ", dir: " + dir);
+                                                                @RequestParam(name = "dir",    defaultValue = "ASC") String dir,
+                                                                @RequestParam(name = "filter", defaultValue = "") String filter) {
+    	LOG.info("Processing getAll request: page=" + page + ", size=" + size + ", column: " + column + ", dir: " + dir + ", filter: " + filter);
 
         if (column.equals("city")) column = "address.city";
         if (column.equals("street")) column = "address.street";
 
         Sort.Direction sortDir = dir.equalsIgnoreCase("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC;
-        Sort.Order order = new Sort.Order(sortDir, column).ignoreCase();
+        Sort.Order order = new Sort.Order(sortDir, column).ignoreCase().nullsLast();
         Sort sort = Sort.by(order);
         PageRequest pageRequest = PageRequest.of(page, size, sort);
 

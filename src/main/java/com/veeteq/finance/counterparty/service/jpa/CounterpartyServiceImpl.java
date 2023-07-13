@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.persistence.LockModeType;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 
 import com.veeteq.finance.counterparty.dto.BankDataDTO;
@@ -88,6 +90,7 @@ public class CounterpartyServiceImpl implements CounterpartyService {
 
     @Override
     @Transactional
+    @Lock(LockModeType.OPTIMISTIC)
     public CounterpartyDTO update(Long id, @Valid CounterpartyDTO dto) throws ResourceNotFoundException {
         LOG.info("Updating a counterparty with id: " + id);
 
