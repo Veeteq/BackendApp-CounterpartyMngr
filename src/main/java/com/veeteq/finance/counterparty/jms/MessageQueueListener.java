@@ -46,20 +46,15 @@ public class MessageQueueListener {
         try {
             BankDataDTO bankData = mapper.readValue(detail, BankDataDTO.class);
             Long counterpartyId = counterpartyService.searchByBankData(bankData);
-
             if (counterpartyId > 0) {
+                LOG.info("Matching Counterparty was found for the criteria");
                 messageQueueService.sendBankStatmentUpdate(bankData.getId(), counterpartyId, message.getJMSReplyTo());
+            } else {
+                LOG.warn("No Counterparty found for the criteria. Preparing notification");
+                counterpartyService.reportMissingCounterparty(bankData);
             }
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        } catch (JMSException e) {
-            throw new RuntimeException(e);
-        } finally {
-            try {
-                message.acknowledge();
-            } catch (JMSException e) {
-                System.out.println(e.getMessage());
-            }
+        } catch (JsonProcessingException | JMSException e) {
+            e.printStackTrace();
         }
     }
     
