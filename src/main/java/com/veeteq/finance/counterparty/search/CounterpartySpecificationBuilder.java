@@ -11,11 +11,11 @@ public class CounterpartySpecificationBuilder {
     }
     
     public static Specification<Counterparty> hasIban(String iban) {
-        return (counterparty, query, criteriaBuilder) -> criteriaBuilder.equal(counterparty.get("bankAccountNumber"), iban);
+        return (counterparty, query, criteriaBuilder) -> criteriaBuilder.equal(counterparty.get("iban"), iban);
     }
     
-    public static Specification<Counterparty> hasNip(String nip) {
-        return (counterparty, query, criteriaBuilder) -> criteriaBuilder.equal(counterparty.get("nip"), nip);
+    public static Specification<Counterparty> hasNip(String taxId) {
+        return (counterparty, query, criteriaBuilder) -> criteriaBuilder.equal(counterparty.get("taxId"), taxId);
     }
     
 }

@@ -104,7 +104,7 @@ class CounterpartyRepositoryTest {
     }
 
     @Test
-    void testFindCounterpartyByBankAccountNumber() {
+    void testFindCounterpartyByIban() {
         String fullName = "Lilu Dallas";
         Counterparty counterparty = createCounterparty(fullName);
         String iban = counterparty.getIban();
