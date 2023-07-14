@@ -56,16 +56,19 @@ public class BasicCounterpartyFinder implements CounterpartyFinder {
     Predicate where = criteriaBuilder.conjunction();
     if (iban != null) {
       where = criteriaBuilder.and(where, criteriaBuilder.equal(counterparty.get("iban"), iban));
+    } else if (tag != null) {
+      where = criteriaBuilder.and(where, criteriaBuilder.equal(tags, tag));
     }
+
+    /*
     if (counterpartyName != null) {
       where = criteriaBuilder.and(where, criteriaBuilder.like(criteriaBuilder.lower(counterparty.<String>get("shortName")), "%" + counterpartyName.toLowerCase() + "%"));
     }
     if (counterpartyAddress != null) {
       where = criteriaBuilder.and(where, criteriaBuilder.like(criteriaBuilder.lower(counterparty.<String>get("address").get("street")), "%" + counterpartyAddress.toLowerCase() + "%"));
     }
-    if (tag != null) {
-      where = criteriaBuilder.and(where, criteriaBuilder.equal(tags, tag));
-    }
+    */
+
     criteriaQuery.where(where);
 
     criteriaQuery.select(counterparty.get("id")).distinct(true);

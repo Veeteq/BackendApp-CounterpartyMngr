@@ -157,6 +157,17 @@ public class CounterpartyServiceImpl implements CounterpartyService {
     }
 
     @Override
+    public void reportMissingCounterparty(BankDataDTO bankData) {
+        StringBuilder sb = new StringBuilder()
+                .append("No Counterparty was found").append("\n")
+                .append("Name: ").append(bankData.getName()).append("\n")
+                .append("Address: ").append(bankData.getAddress()).append("\n")
+                .append("IBAN: ").append(bankData.getIban()).append("\n")
+                .append("Title: ").append(bankData.getTitle());
+        LOG.info(sb.toString());
+    }
+
+    @Override
     public void exportData() {
         LOG.info("Exporting counterparties to file");
 

@@ -30,4 +30,6 @@ public interface CounterpartyService {
     void exportData();
 
     List<CounterpartyDTO> searchByNameIbanTaxId(Map<String, String> searchParams);
+
+    void reportMissingCounterparty(BankDataDTO bankData);
 }
